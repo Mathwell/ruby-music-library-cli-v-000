@@ -21,7 +21,6 @@ class Song
     self.all.clear
   end
 
-end
 
 
   def save
