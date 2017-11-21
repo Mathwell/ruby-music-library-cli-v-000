@@ -17,8 +17,8 @@ class Song
     @@all
   end
 
-  def self.destroy_all
-    all.clear
+  def destroy_all
+    self.all.clear
   end
 
 
@@ -45,7 +45,7 @@ class Song
 
   def genre=(genre)
     @genre=genre
-    genre.add_song(self) #unless genre.include?(self)
+    genre.add_song(self) unless genre.include?(self)
   end
 
   def self.save
@@ -70,9 +70,9 @@ class Song
     #self.new(parameters[1],Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0])) if find_by_name(parameters[1])==NilClass
   end
 
- def self.find_by_name(name)
+  def self.find_by_name(name)
    all.detect{ |s| s.name == name }
-end
+ end
 
  def self.find_or_create_by_name(name)
    find_by_name(name) || create(name)
