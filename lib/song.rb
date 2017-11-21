@@ -70,4 +70,13 @@ class Song
     #self.new(parameters[1],Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0])) if find_by_name(parameters[1])==NilClass
   end
 
+  def self.find_by_name(name)
+   all.detect{ |s| s.name == name }
+ end
+
+ def self.find_or_create_by_name(name)
+   find_by_name(name) || create(name)
+ end
+
+
 end
