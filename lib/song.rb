@@ -17,6 +17,18 @@ class Song
     @@all
   end
 
+  def destroy_all
+    self.all.clear
+  end
+
+end
+
+
+  def save
+    self.class.all<<self
+  end
+
+
 
   def self.create(name)
     self.new(name).save
