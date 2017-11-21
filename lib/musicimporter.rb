@@ -1,6 +1,6 @@
 require 'pry'
 class MusicImporter
-  attr_accessor :path
+  attr_accessor :path, :files
 
   def initialize(path)
       @files=[]
@@ -10,12 +10,13 @@ class MusicImporter
 
     def files
       mp3s=@path+"/*.mp3"
+      files=[]
 
       Dir.glob(mp3s) do |item|
         filename=item.split(@path)[1].split("/")[1]
-        @files<<filename
+        files<<filename
       end
-        @files
+        files
     end
 
 

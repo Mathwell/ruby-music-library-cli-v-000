@@ -5,8 +5,8 @@ class MusicLibraryController
 
   def initialize(path='./db/mp3s')
     @music_importer=MusicImporter.new(path)
-    @music_importer.import
     @files=@music_importer.files
+    @music_importer.import
   end
 
   def call
@@ -23,7 +23,7 @@ class MusicLibraryController
     enter=""
     while enter!='exit' do
       enter=gets
-      puts "You entered: #{enter="exit"}"
+      #puts "You entered: #{enter="exit"}"
       case enter
         when "list songs"
           list_songs
