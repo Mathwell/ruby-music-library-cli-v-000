@@ -1,6 +1,6 @@
 class Song
-  extend Memorable::ClassMethods, Concerns::Findable
-  include Memorable::InstanceMethods
+  extend  Concerns::Findable
+
 
   attr_accessor :name, :artist, :genre
   #attr_reader :artist, :genre
