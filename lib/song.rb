@@ -17,8 +17,8 @@ class Song
     @@all
   end
 
-  def destroy_all
-    self.all.clear
+  def self.destroy_all
+    all.clear
   end
 
 
