@@ -34,6 +34,8 @@ end
     song = new(name)
     song.save
     song
+    # Or, as a one-liner:
+    # new(name).tap{ |s| s.save }
 
   end
 
