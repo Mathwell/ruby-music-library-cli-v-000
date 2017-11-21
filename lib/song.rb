@@ -31,8 +31,10 @@ end
 
 
   def self.create(name)
-    self.new(name).save
-    self
+    song = new(name)
+    song.save
+    song
+
   end
 
   def artist=(artist)
