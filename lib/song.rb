@@ -54,10 +54,13 @@ end
   end
 
   def self.new_from_filename(filename)
-    parameters=filename.split(/\s-\s/)
-    #self.new(parameters[1],Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0])) if find_by_name(parameters[1])==NilClass
-    self.find_or_create_by_name(parameters[1]) #,Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0]))
+    parts = filename.split(" - ")
+    artist_name, song_name, genre_name = parts[0], parts[1], parts[2].gsub(".mp3", "")
 
+    artist = Artist.find_or_create_by_name(artist_name)
+    genre = Genre.find_or_create_by_name(genre_name)
+
+    new(song_name, artist, genre)
   end
 
   def self.create_from_filename(filename)
