@@ -1,6 +1,6 @@
 class Song
-  extend Memorable::ClassMethods, Concerns::Findable
-  include Memorable::InstanceMethods
+  extend  Concerns::Findable
+
 
   attr_accessor :name, :artist, :genre
   #attr_reader :artist, :genre
@@ -19,8 +19,9 @@ class Song
 
 
   def self.create(name)
-    self.new(name).save
-    self
+    song=new(name)
+    song.save
+    song
   end
 
   def artist=(artist)
@@ -38,17 +39,24 @@ class Song
   end
 
   def self.new_from_filename(filename)
-    parameters=filename.split(/\s-\s/)
+    parameters=filename.split(" - ")
+    artist_name, song_name, genre_name =  parameters[0], parameters[1], parameters[2]. gsub(".mp3","")
     #self.new(parameters[1],Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0])) if find_by_name(parameters[1])==NilClass
-    self.find_or_create_by_name(parameters[1]) #,Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0]))
+    artist=Artist.find_or_create_by_name(artist_name) #,Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0]))
+    genre=Genre.find_or_create_by_name(genre_name)
+    new(song_name,artist,genre)
 
   end
 
   def self.create_from_filename(filename)
-    new_from_filename(filename)
-    #puts all
-    #parameters=filename.split(/\s-\s/)
-    #self.new(parameters[1],Artist.new(parameters[0]),Genre.new(parameters[2].split(".")[0])) if find_by_name(parameters[1])==NilClass
+    new_from_filename(filename).tap{|s| s.save}
   end
 
+  def self.destroy_all
+    all.clear
+  end
+
+  def save
+    self.class.all<<self
+  end
 end
