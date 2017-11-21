@@ -1,9 +1,9 @@
 class Artist
-  extend Memorable::ClassMethods, Concerns::Findable
-  include Memorable::InstanceMethods
+  extend Concerns::Findable
   attr_accessor :name
-  @@all=[]
+  attr_reader :songs
 
+  @@all=[]
 
   def initialize(name)
     @name=name
@@ -12,6 +12,14 @@ class Artist
 
   def self.all
     @@all
+  end
+
+  def self.destroy_all
+    all.clear
+  end
+
+  def save
+    self.class.all<<self
   end
 
   def self.create(name)
