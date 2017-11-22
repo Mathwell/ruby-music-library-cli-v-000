@@ -4,9 +4,9 @@ class MusicLibraryController
   attr_accessor :path, :music_importer, :files
 
   def initialize(path='./db/mp3s')
-    @music_importer=MusicImporter.new(path)
-    @files=@music_importer.files
-    @music_importer.import
+    MusicImporter.new(path).import
+    #@files=@music_importer.files
+    #@music_importer.import
   end
 
   def call
@@ -42,43 +42,54 @@ class MusicLibraryController
 
 
   def list_songs
-    #binding.pry
-    songs= @files.collect{|filename|
-      filename.split(/\s-\s/)[1]}.sort.uniq
+
+    #songs= @files.collect{|filename|
+    #  filename.split(/\s-\s/)[1]}.sort.uniq
       #puts "Songs! #{songs}"
 
-    songs.each_with_index do |song, index|
-      puts "#{index+1}. " + @files.detect {|file| file.include?(song)}.split(".")[0].to_s
+    Song.all.sort{|a,b| a.name<=>b.name}.each_with_index do |song, index|
+      puts "#{index+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}" #+ @files.detect {|file| file.include?(song)}.split(".")[0].to_s
       #puts "#{index}. #{song}"
       #songs
     end
   end
 
   def list_artists
-    artists= @files.collect{|filename|
-      filename.split(/\s-\s/)[0]}.sort.uniq
+    #artists= @files.collect{|filename|
+    #  filename.split(/\s-\s/)[0]}.sort.uniq
       #puts "Songs! #{songs}"
 
-    artists.each_with_index do |artist, index|
-      puts "#{index+1}. #{artist}"# +# @files.detect {|file| file.include?(artist)}.split(".")[0].to_s
+    Artist.all.sort{|a,b| a.name<=> b.name}.each_with_index do |artist, index|
+      puts "#{index+1}. #{artist.name}"# +# @files.detect {|file| file.include?(artist)}.split(".")[0].to_s
     end
   end
 
   def list_genres
-    genres=@files.collect{|filename|
-      filename.split(/\s-\s/)[2].split(".")[0]}.sort.uniq
-    genres.each_with_index do |genre, index|
-      puts "#{index+1}. #{genre}"
+    #genres=@files.collect{|filename|
+    #  filename.split(/\s-\s/)[2].split(".")[0]}.sort.uniq
+    Genre.all.sort{|a,b| a.name<=> b.name}.each_with_index do |genre, index|
+      puts "#{index+1}. #{genre.name}"
     end
   end
 
   def list_songs_by_artist
     puts "Please enter the name of an artist:"
-    artist=gets
-    songs=Artist.find_by_name(artist).songs
+    enter=gets.strip
+    if artist=Artist.find_by_name(enter)
     #@files.collect{|filename|  filename.split(/\s-\s/)[1] if filename.split(/\s-\s/)[0]==artist}.sort.uniq unless @files==NilClass
-    songs.each_with_index { |song, index|  puts "#{index+1}. #{song}"} if songs.any?
+      artist.songs.sort{|a,b| a.name<=> b.name}.each_with_index { |song, index|
+        puts "#{index+1}. #{song.name} - #{song.genre.name}"}
+    end
+  end
 
+  def list_songs_by_genre
+    puts "Please enter the name of a genre:"
+    enter=gets.strip
+    if genre=Genre.find_by_name(enter)
+    #@files.collect{|filename|  filename.split(/\s-\s/)[1] if filename.split(/\s-\s/)[0]==artist}.sort.uniq unless @files==NilClass
+      artist.songs.sort{|a,b| a.name<=> b.name}.each_with_index { |song, index|
+        puts "#{index+1}. #{song.name} - #{song.genre.name}"}
+    end
   end
 
   def play_song
